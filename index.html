@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ken Maninang Resume</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div class="newspaper">
+    <header>
+      <h1>KEN MANINANG</h1>
+      <h2>FARELESS DARE MORE!</h2>
+    </header>
+
+    <main class="main-content">
+      <div class="left-column">
+        <img src="image/ken.jpg" alt="Ken Maninang">
+        <div class="photo-caption">KEN MANINANG</div>
+        <p class="highlight">Was officially announced as an aspiring UI/UX Designer and Developer.</p>
+
+        <div class="about-me">
+          <p><span class="dropcap">I</span> am a motivated and responsible student with an interest in programming. My goal is to graduate and pursue a tech-related career.</p>
+        </div>
+
+        <div class="skills-section">
+          <h3>Skills Confirmed</h3>
+          <ul>
+            <li>HTML, CSS, and Flutter</li>
+            <li>Canva and Photoshop Design</li>
+            <li>Communication & Teamwork</li>
+            <li>Time Management</li>
+            <li>Microsoft Office Suite</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="right-column">
+        <h3>Education</h3>
+        <p>
+          <strong>Primary:</strong> Cristo Rey West Elementary School<br>
+          <strong>Secondary:</strong> Cristo Rey High School<br>
+          <strong>Tertiary:</strong> Dominican College of Tarlac, Inc.
+        </p>
+          <br>
+        <h3>Latest Projects</h3>
+        <ul>
+          <li><strong>Plantory Mobile App:</strong> A Flutter-based gardening app for ornamental plants. It features a simple UI, animated login, and care tips to guide users in home gardening.</li>
+          <li><strong>Basketball Tracker Website:</strong> A web app that records tournament stats, team standings, and player scores-designed for Barangay San Jose, Concepcion, Tarlac.</li>
+          <li><strong>Gym Management App:</strong> A Visual Studio app that tracks members, schedules, and payments using forms and logic-built without a database, focused on simple UI and navigation.</li>
+        </ul>
+        
+        <button class="accordion">Contact Info</button>
+        <div class="panel">
+          <p><strong>Email:</strong> kenmaninang819@gmail.com</p>
+          <p><strong>Phone:</strong> +63 981 579 5172</p>
+          <p><strong>Location:</strong> Tarlac, Philippines</p>
+          <p><strong>Address:</strong> Cristo Rey, Capas, Tarlac</p>
+        </div>
+      </div>
+    </main>
+
+    <section class="comments">
+      <h3>🖊️ Reader Comments</h3>
+      <form id="commentForm">
+        <input type="text" id="commentName" placeholder="Your name" required><br>
+        <textarea id="commentText" placeholder="Write your comment..." rows="3" required></textarea><br>
+        <button type="submit">Post Comment</button>
+      </form>
+      <div id="comments"></div>
+    </section>
+
+    <footer>
+      <p>Ken Maninang Resume</p>
+    </footer>
+  </div>
+
+  <script>
+    const accordion = document.querySelector(".accordion");
+    const panel = document.querySelector(".panel");
+    accordion.addEventListener("click", function () {
+      this.classList.toggle("active");
+      panel.style.maxHeight = panel.style.maxHeight ? null : panel.scrollHeight + "px";
+    });
+
+    const commentForm = document.getElementById('commentForm');
+    const commentsContainer = document.getElementById('comments');
+
+    function getComments() {
+      return JSON.parse(localStorage.getItem('comments') || '[]');
+    }
+
+    function saveComments(comments) {
+      localStorage.setItem('comments', JSON.stringify(comments));
+    }
+
+    function deleteComment(index) {
+      const comments = getComments();
+      comments.splice(index, 1);
+      saveComments(comments);
+      renderComments();
+    }
+
+    function renderComments() {
+      const comments = getComments();
+      commentsContainer.innerHTML = '';
+      comments.forEach((comment, index) => {
+        const div = document.createElement('div');
+        div.className = 'comment';
+        div.innerHTML = `
+          <strong>${comment.name}</strong>
+          <p>${comment.text}</p>
+          <button class="delete-btn" onclick="deleteComment(${index})">Delete</button>
+        `;
+        commentsContainer.appendChild(div);
+      });
+    }
+
+    commentForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('commentName').value.trim();
+      const text = document.getElementById('commentText').value.trim();
+      if (!name || !text) return;
+
+      const comments = getComments();
+      comments.push({ name, text });
+      saveComments(comments);
+      renderComments();
+      commentForm.reset();
+    });
+
+    window.onload = renderComments;
+  </script>
+</body>
+</html>
